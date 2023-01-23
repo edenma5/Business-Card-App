@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
-import { loader } from './App';
+import { localVar } from './App';
 
 export default function Signin() {
-    const { loading, setLoading } = useContext(loader);
+    const { loading, setLoading, URL_SERVER } = useContext(localVar);
     const [userName, setUserName] = useState('');
     const navigate = useNavigate();
     const [resFromDb, setResFromDb] = useState('')
@@ -16,7 +16,7 @@ export default function Signin() {
 
     function onSubmitHandle(inputDetails) {
         setLoading(true)
-        axios.post('https://business-card-app-by-em.herokuapp.com/customers/signin', inputDetails)
+        axios.post(`${URL_SERVER}/customers/signin`, inputDetails)
             .then(res => {
                 localStorage.setItem('userInfo', JSON.stringify(res.data))
                 const userInfo = JSON.parse(localStorage.getItem('userInfo'));

@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import images from '../Images/index'
 import axios from 'axios'
 import Spinner from 'react-bootstrap/Spinner';
-import { loader } from './App';
+import { localVar } from './App';
 
 export default function Business() {
-    const { loading, setLoading } = useContext(loader);
+    const { loading, setLoading, URL_SERVER } = useContext(localVar);
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const [resFromDb, setResFromDb] = useState({})
     const { register, handleSubmit, formState: { errors } } = useForm()
@@ -18,7 +18,7 @@ export default function Business() {
     function onSubmitHandle(dataToDB) {
         setLoading(true)
         if (!dataToDB.businessImageUrl) dataToDB.businessImageUrl = images.defaultCardImg;
-        axios.post('https://business-card-app-by-em.herokuapp.com/cards/createforbusinessuser', dataToDB, { headers: { 'token': userInfo?.token } })
+        axios.post(`${URL_SERVER}/cards/createforbusinessuser`, dataToDB, { headers: { 'token': userInfo?.token } })
             .then(res => {
                 setResFromDb(res.data)
                 setLoading(false)

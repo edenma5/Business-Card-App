@@ -1,11 +1,13 @@
-import { Button, CardActions, duration, TextField } from '@mui/material'
+import { Button, CardActions, TextField } from '@mui/material'
 import { motion } from "framer-motion";
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
+import { localVar } from './App';
 
 export default function Cards(props) {
+    const { URL_SERVER } = useContext(localVar)
     const [loading, setLoading] = useState(false);
     const [resFromDb, setResFromDb] = useState({})
     const { cardId, token, businessName, businessDescription, businessAddress, businessPhoneNumber, businessImageUrl, forceUpdateManagmentCards } = props;
@@ -30,7 +32,7 @@ export default function Cards(props) {
     function editHandle(dataToDB) {
         setLoading(true)
         if (!dataToDB.businessImageUrl) dataToDB.businessImageUrl = businessImageUrl;
-        axios.put(`https://business-card-app-by-em.herokuapp.com/cards/updatemycardbyid?cardid=${cardId}`, dataToDB, { headers: { token: token } })
+        axios.put(`${URL_SERVER}/cards/updatemycardbyid?cardid=${cardId}`, dataToDB, { headers: { token: token } })
             .then(res => {
                 setResFromDb(res.data)
                 setLoading(false)
@@ -48,7 +50,7 @@ export default function Cards(props) {
 
     function deleteHandle() {
         setLoading(true)
-        axios.delete(`https://business-card-app-by-em.herokuapp.com/cards/deletemycardbyid?cardid=${cardId}`, { headers: { token: token } })
+        axios.delete(`${URL_SERVER}/cards/deletemycardbyid?cardid=${cardId}`, { headers: { token: token } })
             .then(() => {
                 forceUpdateManagmentCards()
                 setDeletePopUpWindow(false)

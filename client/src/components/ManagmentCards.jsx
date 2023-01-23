@@ -12,10 +12,10 @@ import Spinner from 'react-bootstrap/Spinner';
 import { BsTelephone } from "react-icons/bs";
 import { GoLocation } from "react-icons/go";
 import { AiOutlineFieldTime } from "react-icons/ai";
-import { loader } from "./App";
+import { localVar } from "./App";
 
 export default function ManagmentCards() {
-    const { loading, setLoading } = useContext(loader)
+    const { loading, setLoading, URL_SERVER } = useContext(localVar)
     const [update, updateState] = useState();
     const forceUpdateManagmentCards = useCallback(() => updateState({}), [])
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -25,7 +25,7 @@ export default function ManagmentCards() {
     const [tokenExpired, setTokenExpired] = useState(false);
 
     useEffect(() => {
-        axios.get('https://business-card-app-by-em.herokuapp.com/cards/getallmycards', {
+        axios.get(`${URL_SERVER}/cards/getallmycards`, {
             headers: { token: `${userInfo?.token}` }
         })
             .then(res => {
@@ -39,7 +39,7 @@ export default function ManagmentCards() {
             })
 
         return setLoading(true)
-    }, [update]);
+    }, [update, URL_SERVER, userInfo?.token, setLoading]);
 
     function tokenExpiredHandle() {
         localStorage.clear();

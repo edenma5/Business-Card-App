@@ -10,15 +10,16 @@ import MyBusinessCards from './ManagmentCards';
 import AllBusinessCards from './AllBusinessCards';
 import { createContext, useState } from 'react';
 
-export const loader = createContext()
+export const localVar = createContext()
 
 export default function App() {
     const [loading, setLoading] = useState(false);
+    const URL_SERVER = "https://business-card-app.onrender.com";
 
     return (
         <>
             <BrowserRouter>
-                <loader.Provider value={{ loading, setLoading }}>
+                <localVar.Provider value={{ loading, setLoading, URL_SERVER }}>
                     <Header />
                     <Routes>
                         <Route index element={<Home />} />
@@ -30,7 +31,7 @@ export default function App() {
                         <Route path='allbusinesscards' element={<AllBusinessCards />} />
                     </Routes>
                     <Footer />
-                </loader.Provider>
+                </localVar.Provider>
             </BrowserRouter>
         </>
     )

@@ -10,10 +10,10 @@ import Spinner from 'react-bootstrap/Spinner';
 import { BsTelephone } from "react-icons/bs";
 import { GoLocation } from "react-icons/go";
 import { AiOutlineFieldTime } from "react-icons/ai";
-import { loader } from './App';
+import { localVar } from './App';
 
 export default function AllBusinessCards() {
-    const { loading, setLoading } = useContext(loader);
+    const { loading, setLoading, URL_SERVER } = useContext(localVar);
     const [itemsArr, setItemsArr] = useState([]);
     const [searchValue, setSearchValue] = useState('')
     const [tokenExpired, setTokenExpired] = useState(false);
@@ -21,7 +21,7 @@ export default function AllBusinessCards() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        axios.get('https://business-card-app-by-em.herokuapp.com/cards/getallcards', { headers: { token: userInfo?.token } })
+        axios.get(`${URL_SERVER}/cards/getallcards`, { headers: { token: userInfo?.token } })
             .then(res => {
                 setLoading(false);
                 setItemsArr(res.data)
@@ -32,7 +32,7 @@ export default function AllBusinessCards() {
                 else setItemsArr([])
             })
         return setLoading(true);
-    }, [])
+    }, [URL_SERVER, userInfo?.token, setLoading])
 
     function tokenExpiredHandle() {
         localStorage.clear();

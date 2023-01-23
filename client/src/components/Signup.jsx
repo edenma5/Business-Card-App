@@ -5,17 +5,17 @@ import { Button, Checkbox, FormControlLabel, FormGroup, TextField } from "@mui/m
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
-import { loader } from './App';
+import { localVar } from './App';
 
 export default function Signup() {
-    const { loading, setLoading } = useContext(loader);
+    const { loading, setLoading, URL_SERVER } = useContext(localVar);
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm()
     const [resFromDb, setResFromDb] = useState('')
 
     function onSubmitHandle(dataToDB) {
         setLoading(true)
-        axios.post('https://business-card-app-by-em.herokuapp.com/customers/new', dataToDB)
+        axios.post(`${URL_SERVER}/customers/new`, dataToDB)
             .then(res => {
                 setResFromDb(res.data)
                 setLoading(false)
